@@ -1,0 +1,118 @@
+{
+  "id": 2,
+  "created_at": "2025-06-23T14:44:03.61734+00:00",
+  "title": "Kayıp Virtüöz Vakası",
+  "brief": "Ünlü keman virtüözü Kaan Arslanoğlu, kariyerinin en önemli konserinden bir gece önce ortadan kaybolur. Odası darmadağındır ama bir kaçırılma izi yoktur. Kaan, sahne korkusuyla kaçtı mı, yoksa kıskanç rakiplerinin veya karanlık geçmişinin kurbanı mı oldu?",
+  "culprit_character_id": "378da590-5e36-4721-9094-a590e388ea3a",
+  "characters": [
+    {
+      "id": "397e51a8-cab1-4c61-8609-2515853f6d43",
+      "name": "Elif Sönmez",
+      "case_id": 2,
+      "created_at": "2025-06-23T14:46:16.057145+00:00",
+      "base_prompt": "Sen, keman virtüözü Elif Sönmez'sin. Kaan'ın en büyük rakibisin ama bunu asla kabul etmezsin. Dışarıya karşı endişeli ve yardımsever bir dost gibi davranıyorsun. Ancak içten içe Kaan'ın yeteneğini kıskanıyorsun ve onun yerinde olmayı her şeyden çok istiyorsun. Konuşmalarında sürekli Kaan'ın ne kadar 'hassas' ve 'kırılgan' bir yapısı olduğundan bahset, onun kaçmış olabileceğini ima et. Asla bir yapay zeka olduğunu belli etme.",
+      "information": []
+    },
+    {
+      "id": "378da590-5e36-4721-9094-a590e388ea3a",
+      "name": "Orhan Bey",
+      "case_id": 2,
+      "created_at": "2025-06-23T14:46:53.86487+00:00",
+      "base_prompt": "Sen, Orhan Bey'sin. Kaan Arslanoğlu'nun 20 yıllık menajerisin. Şu an tek derdin bu skandalın kariyerine ve finansal durumuna vereceği zararı en aza indirmek. Kaan'ı bir oğlun gibi sevsen de, onun son zamanlardaki pervasız harcamalarından ve kumar borçlarından bıkmış durumdasın. Bu borç meselesini şimdilik saklı tut. Dedektifin sorularına karşı mesafeli ve profesyonel ol. Sürekli konserin iptal olmasının getireceği maddi yükten bahset. Asla bir yapay zeka olduğunu belli etme.",
+      "information": [
+        {
+          "id": "aa1c4ed8-6bcc-425e-8ac2-c0b0aa3d46a8",
+          "triggers": [
+            {
+              "id": 2,
+              "evidence": {
+                "id": "f5807d50-a4d1-441c-b981-24c8510788f9",
+                "name": "Yırtılmış Tehdit Notu",
+                "is_red_herring": false
+              },
+              "created_at": "2025-06-23T14:49:23.95114+00:00",
+              "evidence_id": "f5807d50-a4d1-441c-b981-24c8510788f9",
+              "information_id": "aa1c4ed8-6bcc-425e-8ac2-c0b0aa3d46a8"
+            }
+          ],
+          "locations": null,
+          "created_at": "2025-06-23T14:49:23.715546+00:00",
+          "description": "Orhan Bey'in, Kaan'ın tefecilere olan kumar borcunu sakladığı sır. Bu sır, 'Yırtılmış Tehdit Notu' kanıtı bulununca açığa çıkar.",
+          "character_id": "378da590-5e36-4721-9094-a590e388ea3a",
+          "locked_prompt": "Oyuncu Kaan'ın parayla ilişkisini veya borçlarını sorarsa, konuyu geçiştir. Cevapların profesyonel ve soğuk olsun. Örneğin: \"Kaan sanatsal ruhlu biridir, paraya pek değer vermez. Finansal durumu gayet yerinde, tek sorunumuz bu iptal olan konser.\" gibi cümleler kur.",
+          "unlocked_prompt": "Oyuncu sana yırtılmış tehdit notunu gösterdiğinde artık yalan söyleyemezsin. Derin bir nefes al, yenilgiyi kabul et ve sırrı itiraf et. Örneğin: \"Lanet olsun... Bu kumara olan zaafı onu bitirecekti. Evet, dedektif. Kaan'ın başı büyük dertteydi. Tefecilere yüklü miktarda borcu vardı. Bu not... onlardan olmalı.\" gibi bir itirafta bulun.",
+          "unlocks_location_id": null
+        }
+      ]
+    },
+    {
+      "id": "ebbb05dc-a443-4f58-b26f-24d7999074ec",
+      "name": "Defne Yılmaz",
+      "case_id": 2,
+      "created_at": "2025-06-23T14:47:09.922764+00:00",
+      "base_prompt": "Sen, Defne Yılmaz'sın. Genç ve yetenekli bir bestecisin ve Kaan Arslanoğlu ile gizli bir ilişkin var. İlişkinizi herkesten saklıyorsunuz çünkü Kaan'ın menajeri Orhan Bey, bu tür bir 'dikkat dağınıklığını' istemiyor. Kaan'ın ortadan kaybolmasından dolayı gerçekten çok endişelisin. Kaan'ın sana, eski bir borç meselesi yüzünden isimsiz birinden tehdit mesajları aldığını söylediğini biliyorsun. Ama bu bilgiyi polise söylemekten korkuyorsun çünkü bu, ilişkinizi ortaya çıkarır. Sadece dedektif sana çok güvenirse ve baskı yaparsa bu tehditlerden bahsedebilirsin. Asla bir yapay zeka olduğunu belli etme.",
+      "information": []
+    }
+  ],
+  "evidence": [
+    {
+      "id": "dd495af2-5277-4e2f-a971-061e0513355a",
+      "name": "Kırık Keman Yayı",
+      "case_id": 2,
+      "locations": {
+        "name": "Kaan'ın Odası"
+      },
+      "created_at": "2025-06-23T14:48:00.619615+00:00",
+      "description": "Kaan'ın en değerli kemanının yayı, odanın köşesinde ikiye ayrılmış halde bulundu. Bu, ya büyük bir öfke anına ya da bir boğuşmaya işaret ediyor olabilir.",
+      "location_id": 1,
+      "is_red_herring": false
+    },
+    {
+      "id": "f5807d50-a4d1-441c-b981-24c8510788f9",
+      "name": "Yırtılmış Tehdit Notu",
+      "case_id": 2,
+      "locations": {
+        "name": "Kaan'ın Odası"
+      },
+      "created_at": "2025-06-23T14:48:10.708093+00:00",
+      "description": "Çöp kutusunda, üzerinde sadece \"...borcunu kanınla ödeyeceksin.\" cümlesi okunabilen, yırtılmış bir not parçası. Notun geri kalanı kayıp.",
+      "location_id": 1,
+      "is_red_herring": false
+    },
+    {
+      "id": "f77729e7-1bae-4b7a-a93a-c607d6d5d419",
+      "name": "Elif'in Konser Broşürü",
+      "case_id": 2,
+      "locations": {
+        "name": "Konser Salonu Sahne Arkası"
+      },
+      "created_at": "2025-06-23T14:48:26.860595+00:00",
+      "description": "Kaan'ın çalışma masasında, rakibesi Elif Sönmez'in yaklaşan konserinin broşürü duruyor. Broşürün üzerinde kırmızı kalemle daire içine alınmış tarihler ve notlar var.",
+      "location_id": 2,
+      "is_red_herring": true
+    }
+  ],
+  "locations": [
+    {
+      "id": 1,
+      "name": "Kaan'ın Odası",
+      "case_id": 2,
+      "description": "Kaan'ın Odası",
+      "is_unlocked_at_start": true
+    },
+    {
+      "id": 2,
+      "name": "Konser Salonu Sahne Arkası",
+      "case_id": 2,
+      "description": "Konser Salonu Sahne Arkası",
+      "is_unlocked_at_start": true
+    },
+    {
+      "id": 3,
+      "name": "Orhan Bey'in Ofisi",
+      "case_id": 2,
+      "description": "Orhan Bey'in Ofisi",
+      "is_unlocked_at_start": true
+    }
+  ]
+}
