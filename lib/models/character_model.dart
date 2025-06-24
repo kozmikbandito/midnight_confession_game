@@ -1,34 +1,46 @@
-// Daha önce oluşturduğumuz InformationModel'i bu dosyada kullanacağımız
-// için onu import ediyoruz.
-import 'information_model.dart';
+import 'alibi_model.dart'; // Mazeret modelini import ediyoruz.
 
 // Bu sınıf, JSON dosyasındaki tek bir "characters" nesnesini temsil eder.
 class CharacterModel {
   final String id;
   final String name;
-  final String basePrompt;
-  final List<InformationModel> information; // Bir karakterin bildiği sırların listesi
+  final int age;
+  final String occupation;
+  final String roleInCase; // suspect, witness, visitor vb.
+  final List<String> traits; // hırslı, sessiz vb.
+  final String? motive;
+  final AlibiModel alibi;
+  final List<String> inventory;
 
-  // Yapıcı metot (constructor)
   CharacterModel({
     required this.id,
     required this.name,
-    required this.basePrompt,
-    required this.information,
+    required this.age,
+    required this.occupation,
+    required this.roleInCase,
+    required this.traits,
+    this.motive,
+    required this.alibi,
+    required this.inventory,
   });
 
-  // JSON'dan gelen Map'i bir CharacterModel nesnesine dönüştürür.
+  // Gelen JSON verisinden bir CharacterModel nesnesi oluşturur.
   factory CharacterModel.fromJson(Map<String, dynamic> json) {
-    // 'information' listesi JSON'da bir dizi olarak gelir.
-    // Bu dizideki her bir elemanı bir InformationModel nesnesine çeviriyoruz.
-    var infoFromJson = json['information'] as List? ?? [];
-    List<InformationModel> infoList = infoFromJson.map((i) => InformationModel.fromJson(i)).toList();
+    // 'traits' ve 'inventory' listelerini List<String>'e çeviriyoruz.
+    final traitsList = (json['traits'] as List<dynamic>? ?? []).map((t) => t.toString()).toList();
+    final inventoryList = (json['inventory'] as List<dynamic>? ?? []).map((i) => i.toString()).toList();
 
     return CharacterModel(
-      id: json['id'],
-      name: json['name'],
-      basePrompt: json['base_prompt'],
-      information: infoList,
+      id: json['id'] ?? '',
+      name: json['name'] ?? 'İsimsiz Şahıs',
+      age: json['age'] ?? 0,
+      occupation: json['occupation'] ?? 'Bilinmiyor',
+      roleInCase: json['role_in_case'] ?? 'Bilinmiyor',
+      traits: traitsList,
+      motive: json['motive'],
+      // 'alibi' nesnesini, AlibiModel.fromJson kullanarak kendi modelimize çeviriyoruz.
+      alibi: AlibiModel.fromJson(json['alibi'] ?? {}),
+      inventory: inventoryList,
     );
   }
 }

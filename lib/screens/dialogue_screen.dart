@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/character_model.dart';
-import '../engine/game_engine.dart'; // GameEngine'i import ediyoruz
+import '../engine/game_engine.dart';
 
 // Mesajları tutmak için basit bir sınıf.
 class ChatMessage {
@@ -23,7 +23,7 @@ class DialogueScreen extends StatefulWidget {
 class _DialogueScreenState extends State<DialogueScreen> {
   final TextEditingController _textController = TextEditingController();
   // GÜNCELLEME: Konuşma geçmişini artık GameState'ten alacağız.
-  List<ChatMessage> _messages = [];
+  late List<ChatMessage> _messages;
   bool _isResponding = false; // Bot'un cevap verip vermediğini takip eder.
 
   @override
@@ -45,7 +45,9 @@ class _DialogueScreenState extends State<DialogueScreen> {
 
     setState(() {
       _isResponding = true;
-      _messages.insert(0, ChatMessage(text: text, isPlayer: true));
+      // Oyuncunun mesajı anında ekranda gösterilir.
+      // GameState'e ekleme işini motor yaptığı için burada sadece UI'ı güncelliyoruz.
+       _messages.insert(0, ChatMessage(text: text, isPlayer: true));
     });
 
     // YENİ: Oyun motorunu kullanarak cevap alıyoruz.
@@ -81,7 +83,7 @@ class _DialogueScreenState extends State<DialogueScreen> {
           if (_isResponding)
             const Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text("Yazıyor...", style: TextStyle(color: Colors.grey)),
+              child: LinearProgressIndicator(),
             ),
           const Divider(height: 1.0),
           Container(
@@ -103,7 +105,7 @@ class _DialogueScreenState extends State<DialogueScreen> {
             Flexible(
               child: TextField(
                 controller: _textController,
-                onSubmitted: _handleSubmitted,
+                onSubmitted: _isResponding ? null : _handleSubmitted,
                 decoration: const InputDecoration.collapsed(hintText: "Sorunuzu yazın..."),
               ),
             ),

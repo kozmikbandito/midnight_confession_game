@@ -1,77 +1,78 @@
 import '../models/case_model.dart';
 import '../models/evidence_model.dart';
 import '../models/information_model.dart';
-import '../screens/dialogue_screen.dart'; // ChatMessage sınıfını kullanmak için
+import '../models/rumor_model.dart'; // Added import for RumorModel
+import '../screens/dialogue_screen.dart'; 
 
-// Bu sınıf, tek bir oyun oturumunun tüm durumunu yönetir.
 class GameStateService {
-  // Yüklenen vakanın tüm verileri burada tutulur.
   final CaseModel caseData;
 
-  // Oyuncunun ilerlemesini takip eden listeler.
   final Set<String> discoveredEvidenceIds = {};
+  final Set<String> unlockedRoomIds = {};
+  final Set<String> heardRumorIds = {};
+  final Set<String> brokenAlibiCharacterIds = {};
+  final Set<String> debunkedEvidenceIds = {};
   final Set<String> unlockedInformationIds = {};
-  final Set<int> unlockedLocationIds = {};
 
-  // Her karakterle yapılan konuşma geçmişini tutar.
   final Map<String, List<ChatMessage>> conversationHistories = {};
 
   GameStateService({required this.caseData}) {
-    // Oyun başladığında, başlangıçta kilidi açık olan tüm mekanları listeye ekle.
-    for (var location in caseData.locations) {
-      if (location.isUnlockedAtStart) {
-        unlockedLocationIds.add(location.id);
+    for (var room in caseData.rooms) {
+      if (!room.locked) {
+        unlockedRoomIds.add(room.id);
       }
     }
   }
 
-  // --- Yardımcı Fonksiyonlar ---
-
-  // Belirli bir kanıtın bulunup bulunmadığını kontrol eder.
-  bool hasFoundEvidence(String evidenceId) {
-    return discoveredEvidenceIds.contains(evidenceId);
-  }
-
-  // Yeni bir kanıt ekler.
   void addDiscoveredEvidence(String evidenceId) {
     discoveredEvidenceIds.add(evidenceId);
   }
 
-  // Belirli bir sırrın açığa çıkıp çıkmadığını kontrol eder.
-  bool hasUnlockedInfo(String infoId) {
-    return unlockedInformationIds.contains(infoId);
+  bool hasFoundEvidence(String evidenceId) {
+    return discoveredEvidenceIds.contains(evidenceId);
   }
-  
-  // Yeni bir sırrı listeye ekler.
-  void addUnlockedInfo(String infoId) {
-    unlockedInformationIds.add(infoId);
-  }
-  
-  // Bir konuşma geçmişine yeni bir mesaj ekler.
+
   void addMessageToHistory(String characterId, ChatMessage message) {
     if (!conversationHistories.containsKey(characterId)) {
       conversationHistories[characterId] = [];
     }
-    // Konuşmayı güncel tutmak için mesajı başa ekliyoruz (reverse list gibi).
     conversationHistories[characterId]!.insert(0, message);
   }
+  
+  void unlockRoom(String roomId) {
+    unlockedRoomIds.add(roomId);
+  }
 
+  void addUnlockedInfo(String infoId) {
+    unlockedInformationIds.add(infoId);
+  }
+  
   // --- NOT DEFTERİ İÇİN YENİ FONKSİYONLAR ---
 
-  // Bulunan tüm kanıtların tam listesini döndürür.
   List<EvidenceModel> getFoundEvidence() {
     return caseData.evidence
         .where((e) => discoveredEvidenceIds.contains(e.id))
         .toList();
   }
 
-  // Açığa çıkan tüm sırların tam listesini döndürür.
+  // YENİ: getHeardRumors fonksiyonu eklendi
+  List<RumorModel> getHeardRumors() {
+     return caseData.rumors
+        .where((r) => heardRumorIds.contains(r.id))
+        .toList();
+  }
+
   List<InformationModel> getUnlockedInformation() {
     List<InformationModel> unlockedList = [];
-    for (var character in caseData.characters) {
-      unlockedList.addAll(character.information
-          .where((info) => unlockedInformationIds.contains(info.id)));
-    }
+    // Bu fonksiyon, yeni JSON yapısına göre güncellenecek.
+    // Şimdilik sırları karakterlerden değil, doğrudan case'den alıyoruz gibi varsayalım.
+    // Gerçek oyunda bu mantık daha karmaşık olacak.
+    // Örneğin, caseData.information gibi bir liste varsa:
+    // if (caseData.information != null) {
+    //   unlockedList = caseData.information!
+    //       .where((info) => unlockedInformationIds.contains(info.id))
+    //       .toList();
+    // }
     return unlockedList;
   }
 }

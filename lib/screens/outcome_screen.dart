@@ -1,3 +1,6 @@
+// ===================================================================
+// DOSYA: lib/screens/outcome_screen.dart
+// ===================================================================
 import 'package:flutter/material.dart';
 
 class OutcomeScreen extends StatelessWidget {
@@ -5,12 +8,7 @@ class OutcomeScreen extends StatelessWidget {
   final String culpritName;
   final String accusedName;
 
-  const OutcomeScreen({
-    super.key,
-    required this.wasSuccessful,
-    required this.culpritName,
-    required this.accusedName,
-  });
+  const OutcomeScreen({super.key, required this.wasSuccessful, required this.culpritName, required this.accusedName});
 
   @override
   Widget build(BuildContext context) {
@@ -30,27 +28,15 @@ class OutcomeScreen extends StatelessWidget {
           children: [
             Icon(icon, size: 120, color: color),
             const SizedBox(height: 30),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: color),
-            ),
+            Text(title, textAlign: TextAlign.center, style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: color)),
             const SizedBox(height: 20),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 18, color: Colors.grey.shade300, height: 1.5),
-            ),
+            Text(message, textAlign: TextAlign.center, style: TextStyle(fontSize: 18, color: Colors.grey.shade300, height: 1.5)),
             const SizedBox(height: 50),
             ElevatedButton(
               onPressed: () {
-                // TODO: Oyuncuyu Ana Menü'ye veya Bölüm Seçim Ekranı'na geri döndür.
-                // Navigator.of(context).popUntil((route) => route.isFirst);
+                Navigator.of(context).popUntil((route) => route.isFirst);
               },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                backgroundColor: Colors.grey.shade700,
-              ),
+              style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 20), backgroundColor: Colors.grey.shade700),
               child: const Text('Ana Menüye Dön', style: TextStyle(fontSize: 18)),
             ),
           ],

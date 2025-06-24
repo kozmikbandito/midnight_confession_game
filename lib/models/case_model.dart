@@ -1,51 +1,72 @@
 // Diğer tüm modellerimizi bu ana modelin içinde kullanacağımız için hepsini import ediyoruz.
+import 'victim_model.dart';
 import 'character_model.dart';
+import 'relationship_model.dart';
+import 'room_model.dart';
 import 'evidence_model.dart';
-import 'location_model.dart';
+import 'rumor_model.dart';
 
 // Bu sınıf, tüm vaka dosyasını (JSON'ın en dış katmanını) temsil eder.
 class CaseModel {
-  final int id;
+  final String id;
   final String title;
-  final String brief;
-  final String? culpritCharacterId; // Suçlunun ID'si, henüz atanmamış olabilir.
+  final String description;
+  final VictimModel victim;
   final List<CharacterModel> characters;
+  final List<RelationshipModel> relationships;
+  final List<RoomModel> rooms;
   final List<EvidenceModel> evidence;
-  final List<LocationModel> locations;
+  final List<RumorModel> rumors;
 
-  // Yapıcı metot (constructor)
   CaseModel({
     required this.id,
     required this.title,
-    required this.brief,
-    this.culpritCharacterId,
+    required this.description,
+    required this.victim,
     required this.characters,
+    required this.relationships,
+    required this.rooms,
     required this.evidence,
-    required this.locations,
+    required this.rumors,
   });
 
-  // JSON'dan gelen Map'i bir CaseModel nesnesine dönüştüren en kapsamlı factory metodu.
+  // Gelen JSON verisinden bir CaseModel nesnesi oluşturur.
   factory CaseModel.fromJson(Map<String, dynamic> json) {
-    // 'characters' listesini alıp her bir elemanı CharacterModel nesnesine çeviriyoruz.
-    var charactersFromJson = json['characters'] as List? ?? [];
-    List<CharacterModel> characterList = charactersFromJson.map((i) => CharacterModel.fromJson(i)).toList();
+    // JSON'daki en dış 'case' anahtarının altındaki veriyi alıyoruz.
+    final caseData = json['case'] ?? {};
 
-    // 'evidence' listesini alıp her bir elemanı EvidenceModel nesnesine çeviriyoruz.
-    var evidenceFromJson = json['evidence'] as List? ?? [];
-    List<EvidenceModel> evidenceList = evidenceFromJson.map((i) => EvidenceModel.fromJson(i)).toList();
+    // Her bir listeyi, ilgili modelin fromJson metodunu kullanarak
+    // nesne listelerine dönüştürüyoruz.
+    final charactersList = (caseData['characters'] as List<dynamic>? ?? [])
+        .map((c) => CharacterModel.fromJson(c))
+        .toList();
+    
+    final relationshipsList = (caseData['relationships'] as List<dynamic>? ?? [])
+        .map((r) => RelationshipModel.fromJson(r))
+        .toList();
 
-    // 'locations' listesini alıp her bir elemanı LocationModel nesnesine çeviriyoruz.
-    var locationsFromJson = json['locations'] as List? ?? [];
-    List<LocationModel> locationList = locationsFromJson.map((i) => LocationModel.fromJson(i)).toList();
+    final roomsList = (caseData['rooms'] as List<dynamic>? ?? [])
+        .map((r) => RoomModel.fromJson(r))
+        .toList();
+        
+    final evidenceList = (caseData['evidence'] as List<dynamic>? ?? [])
+        .map((e) => EvidenceModel.fromJson(e))
+        .toList();
+
+    final rumorsList = (caseData['rumors'] as List<dynamic>? ?? [])
+        .map((r) => RumorModel.fromJson(r))
+        .toList();
 
     return CaseModel(
-      id: json['id'],
-      title: json['title'],
-      brief: json['brief'],
-      culpritCharacterId: json['culprit_character_id'],
-      characters: characterList,
+      id: caseData['id'] ?? '',
+      title: caseData['title'] ?? 'İsimsiz Vaka',
+      description: caseData['description'] ?? 'Açıklama yok.',
+      victim: VictimModel.fromJson(caseData['victim'] ?? {}),
+      characters: charactersList,
+      relationships: relationshipsList,
+      rooms: roomsList,
       evidence: evidenceList,
-      locations: locationList,
+      rumors: rumorsList,
     );
   }
 }

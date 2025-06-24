@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import '../models/location_model.dart';
-import '../engine/game_engine.dart'; 
+import '../models/room_model.dart';
+import '../engine/game_engine.dart';
 
 class LocationDetailScreen extends StatefulWidget {
-  final LocationModel location;
+  // GÜNCELLEME: Artık yeni RoomModel'i kullanıyoruz.
+  final RoomModel room; // Changed from LocationModel to RoomModel
   final GameEngine gameEngine;
 
   const LocationDetailScreen({
     super.key,
-    required this.location,
+    required this.room, // Changed from location to room
     required this.gameEngine,
   });
 
@@ -21,11 +22,13 @@ class _LocationDetailScreenState extends State<LocationDetailScreen> {
   bool _hasSearched = false;
 
   void _searchForClues() {
-    final result = widget.gameEngine.searchLocation(widget.location.id);
+    // GÜNCELLEME: Artık yapay bir sonuç yerine, doğrudan oyun motorumuzdaki
+    // searchLocation fonksiyonunu çağırıyoruz.
+    final result = widget.gameEngine.searchLocation(widget.room.id);
 
     setState(() {
-      _searchResult = result;
-      _hasSearched = true;
+      _searchResult = result; // Motordan gelen sonucu ekranda gösteriyoruz.
+      _hasSearched = true; // Arama yapıldığını işaretliyoruz.
     });
   }
 
@@ -33,7 +36,7 @@ class _LocationDetailScreenState extends State<LocationDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.location.name),
+        title: Text(widget.room.name),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -42,16 +45,19 @@ class _LocationDetailScreenState extends State<LocationDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Mekan Betimlemesi (henüz JSON'da yok, ileride eklenebilir)
             Text(
-              widget.location.description ?? 'Bu mekan hakkında bir açıklama yok.',
+              "Odaya giriyorsun. Etraf biraz dağınık görünüyor.", // Geçici metin
               style: TextStyle(fontSize: 18, color: Colors.grey.shade300, height: 1.5),
             ),
-            const Spacer(),
+            const Spacer(), // Boşlukları doldurur
+
+            // Arama Sonucu Alanı
             if (_hasSearched)
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.black.withAlpha(77), // DÜZELTME
+                  color: Colors.black.withAlpha(77),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
@@ -63,10 +69,11 @@ class _LocationDetailScreenState extends State<LocationDetailScreen> {
 
             const SizedBox(height: 30),
 
+            // Eylem Butonu
             ElevatedButton.icon(
               icon: const Icon(Icons.search),
-              label: const Text('İpucu Ara'),
-              onPressed: _hasSearched ? null : _searchForClues,
+              label: const Text('Odayı Ara'),
+              onPressed: _hasSearched ? null : _searchForClues, // Eğer daha önce arandıysa butonu pasif yap
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 backgroundColor: Colors.teal,

@@ -1,7 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'case_brief_screen.dart';
+import '../services/case_loader_service.dart'; // YENİ: Vaka yükleyici servisini import ediyoruz.
+import 'case_brief_screen.dart'; 
 
 class CaseSelectionScreen extends StatefulWidget {
   const CaseSelectionScreen({super.key});
@@ -11,6 +10,9 @@ class CaseSelectionScreen extends StatefulWidget {
 }
 
 class _CaseSelectionScreenState extends State<CaseSelectionScreen> {
+  // YENİ: Servis sınıfımızdan bir nesne oluşturuyoruz.
+  final CaseLoaderService _loader = CaseLoaderService();
+  
   List<Map<String, String>> _cases = [];
   bool _isLoading = true;
 
@@ -20,25 +22,10 @@ class _CaseSelectionScreenState extends State<CaseSelectionScreen> {
     _loadCases();
   }
 
+  // GÜNCELLEME: Bu fonksiyon artık tüm işi servisimize devrediyor.
   Future<void> _loadCases() async {
     try {
-      final manifestContent = await rootBundle.loadString('AssetManifest.json');
-      final Map<String, dynamic> manifestMap = json.decode(manifestContent);
-      
-      final casePaths = manifestMap.keys
-          .where((String key) => key.startsWith('assets/cases/'))
-          .where((String key) => key.toLowerCase().endsWith('.json'))
-          .toList();
-
-      List<Map<String, String>> loadedCases = [];
-      for (var path in casePaths) {
-        final jsonString = await rootBundle.loadString(path);
-        final jsonMap = json.decode(jsonString);
-        loadedCases.add({
-          'path': path,
-          'title': jsonMap['title'] ?? 'İsimsiz Vaka',
-        });
-      }
+      final loadedCases = await _loader.getAvailableCases();
       
       setState(() {
         _cases = loadedCases;
@@ -46,7 +33,7 @@ class _CaseSelectionScreenState extends State<CaseSelectionScreen> {
       });
 
     } catch (e) {
-      // print('Vakalar yüklenirken hata oluştu: $e'); // DÜZELTME
+      print('Vakalar yüklenirken hata oluştu: $e');
       setState(() {
         _isLoading = false;
       });

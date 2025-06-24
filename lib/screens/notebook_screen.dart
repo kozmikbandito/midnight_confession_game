@@ -1,3 +1,6 @@
+// ===================================================================
+// DOSYA: lib/screens/notebook_screen.dart
+// ===================================================================
 import 'package:flutter/material.dart';
 import '../engine/game_engine.dart';
 import '../models/evidence_model.dart';
@@ -10,13 +13,13 @@ class NotebookScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // GameState'ten bulunan kanıtları ve açığa çıkan sırları alıyoruz.
     final foundEvidence = gameEngine.gameState.getFoundEvidence();
-    final unlockedInfo = gameEngine.gameState.getUnlockedInformation();
+    // getUnlockedInformation fonksiyonu henüz tam dolu değil, ileride doldurulacak.
+    // final unlockedInfo = gameEngine.gameState.getUnlockedInformation();
+    final unlockedInfo = <InformationModel>[]; // Şimdilik boş liste
 
-    // Sekmeli bir yapı için DefaultTabController kullanıyoruz.
     return DefaultTabController(
-      length: 2, // İki sekmemiz var: Kanıtlar ve Bilgiler
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Not Defteri'),
@@ -31,9 +34,7 @@ class NotebookScreen extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            // 1. Sekme: Kanıtlar
             _buildEvidenceTab(foundEvidence),
-            // 2. Sekme: Önemli Bilgiler (Sırlar)
             _buildInformationTab(unlockedInfo),
           ],
         ),
@@ -41,39 +42,45 @@ class NotebookScreen extends StatelessWidget {
     );
   }
 
-  // Kanıtlar sekmesini oluşturan widget.
   Widget _buildEvidenceTab(List<EvidenceModel> evidenceList) {
     if (evidenceList.isEmpty) {
       return const Center(child: Text('Henüz kanıt bulunamadı.'));
     }
     return ListView.builder(
+      padding: const EdgeInsets.all(8),
       itemCount: evidenceList.length,
       itemBuilder: (context, index) {
         final evidence = evidenceList[index];
-        return ListTile(
-          leading: Icon(evidence.isRedHerring ? Icons.question_mark : Icons.check_circle_outline,
-            color: evidence.isRedHerring ? Colors.orange : Colors.green
+        final isMisleading = evidence.validity == 'misleading';
+        return Card(
+          child: ListTile(
+            leading: Icon(
+              isMisleading ? Icons.question_mark : Icons.check_circle_outline,
+              color: isMisleading ? Colors.orange : Colors.green,
+            ),
+            title: Text(evidence.name),
+            subtitle: Text(evidence.description),
           ),
-          title: Text(evidence.name),
-          subtitle: Text(evidence.description),
         );
       },
     );
   }
 
-  // Önemli Bilgiler (Sırlar) sekmesini oluşturan widget.
   Widget _buildInformationTab(List<InformationModel> infoList) {
     if (infoList.isEmpty) {
       return const Center(child: Text('Henüz önemli bir bilgi edinilmedi.'));
     }
     return ListView.builder(
+      padding: const EdgeInsets.all(8),
       itemCount: infoList.length,
       itemBuilder: (context, index) {
         final info = infoList[index];
-        return ListTile(
-          leading: const Icon(Icons.key, color: Colors.amber),
-          title: Text(info.description),
-          subtitle: Text("Bu sır, bir konuşma sırasında açığa çıktı."),
+        return Card(
+          child: ListTile(
+            leading: const Icon(Icons.key, color: Colors.amber),
+            title: Text(info.description),
+            subtitle: const Text("Bu sır, bir konuşma sırasında açığa çıktı."),
+          ),
         );
       },
     );
